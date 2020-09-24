@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Edit Menu</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" th:href="@{/plugins/fontawesome-free/css/all.min.css}">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" th:href="@{/dist/css/adminlte.min.css}">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.0.45/css/materialdesignicons.min.css">
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <script  th:src="@{/plugins/jquery/jquery.min.js}"></script>
+    <script th:src="@{/loadmenu.js}"></script>
+    <script th:src="@{/btnclick.js}"></script>
+    <script th:src="@{/validate.js}"></script>
+    <script th:src="@{/selectbox.js}"></script>
+    <script th:src="@{/comboTreePlugin.js}"  type="text/javascript"></script>
+    <script th:src="@{/jquery.validate.min.js}"></script>
+</head>
+<body class="hold-transition sidebar-mini">
+<!-- Site wrapper -->
+<div th:replace="fragment/modal :: modal"></div>
+<div class="wrapper">
+    <!-- header -->
+    <div th:replace="fragment/header :: header"></div>
+    <!-- /.header-->
+
+    <!-- navbar -->
+    <div th:replace="fragment/navbar :: navbar"></div>
+    <!-- /.navbar -->
+
+    <!--    Content-->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Edit Page</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Edit Page</li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <form method="post" id = "formEdit">
+
+                <div class="col-md-12">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Edit Menu</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="menuID">Menu ID</label>
+                                <input type="text" id ="menuID" class="form-control" readonly = "readonly" >
+                            </div>
+                            <div class="form-group">
+                                <label for="menuName">Menu Name</label>
+                                <input name="menuName" type="text" id ="menuName" class="form-control" autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <label for="menuSlug">URL</label>
+                                <input name= "menuSlug" type="text" id ="menuSlug" class="form-control" autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <label for="menuIcon">Menu Icon</label>
+                                <input name= "menuIcon" type="text" id ="menuIcon" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="menuParentName">Menu Parent Name</label>
+                                <input  type="text" name= "menuParentName" id="menuParentName" class="form-control" readonly/>
+                            </div>
+                            <div class="form-group">
+                                <label for="menuDescription">Menu Description</label>
+                                <textarea name="menuDescription" id="menuDescription" class="form-control" rows="3" ></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="menuStatus">Menu Status</label>
+                                <select name= "menuStatus" id="menuStatus" class="form-control custom-select">
+                                    <option>ACTIVE</option>
+                                    <option>INACTIVE</option>
+                                </select>
+                            </div>
+                            <button type="button" class="btn-add btn btn-success float-right" onclick="submitEdit()" data-toggle="modal" data-target="#exampleModal">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+<!--    footer-->
+    <div th:replace="fragment/footer :: footer"></div>
+    <!-- /.footer -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+<!-- jQuery -->
+
+<!-- Bootstrap 4 -->
+<script th:src="@{/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- AdminLTE App -->
+<script th:src="@{/dist/js/adminlte.min.js}"></script>
+<!-- AdminLTE for demo purposes -->
+<script th:src="@{/dist/js/demo.js}"></script>
+<script>
+<!--load data to form edit-->
+
+$(document).ready(function(){
+   let id = [[${menu.getId()}]]
+    $.getJSON("http://localhost:8081/api/v1/roles/1/menus/" + id, function(result){
+<!--        console.log(result.data)-->
+        document.getElementById("menuID").value= result.data.id
+        document.getElementById("menuName").value= result.data.menuName
+        document.getElementById("menuSlug").value= result.data.menuSlug
+        document.getElementById("menuIcon").value= result.data.menuIcon
+        document.getElementById("menuDescription").value= result.data.menuDescription
+
+        if(result.data.menuStatus == "ACTIVE"){
+            document.getElementById("menuStatus").selectedIndex = "0"
+        }
+        if(result.data.menuStatus == "INACTIVE"){
+            document.getElementById("menuStatus").selectedIndex = "1"
+        }
+        if(result.data.menuParentId == 0 ){
+            document.getElementById("menuParentName").value= "[Root]"
+        }else{
+            $.getJSON("http://localhost:8081/api/v1/roles/1/menus/" + result.data.menuParentId, function(value){
+                    var cbb =  value.data.id + "." + value.data.menuName
+                    document.getElementById("menuParentName").value= cbb
+            });
+        }
+     });
+});
+</script>
+</body>
+</html>

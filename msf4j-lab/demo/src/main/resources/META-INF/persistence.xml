@@ -22,9 +22,9 @@
         <!--         For MySQL database -->
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/msf4j"/>
-            <property name="javax.persistence.jdbc.user" value="root"/>
-            <property name="javax.persistence.jdbc.password" value="1234"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://sql10.freemysqlhosting.net:3306/sql10360336"/>
+            <property name="javax.persistence.jdbc.user" value="sql10360336"/>
+            <property name="javax.persistence.jdbc.password" value="NZQ7j6RRQ8"/>
 
             <property name="hibernate.format_sql" value="true"/>
             <property name="hibernate.use_sql_comments" value="true"/>

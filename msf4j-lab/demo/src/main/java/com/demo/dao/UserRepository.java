@@ -15,15 +15,15 @@ public class UserRepository extends AbstractRepository<User> {
     create(user);
   }
 
-  public void removeUser(long id) {
+  public void removeUserById(long id) {
     remove(id);
   }
 
-  public User findUser(long id) {
+  public User findUserById(long id) {
     return find(id);
   }
 
-  public List<User> findUsers() {
+  public List<User> getAllUser() {
     return findAll(User.class);
   }
 
